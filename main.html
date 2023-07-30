@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"
+      integrity="sha512-bcfltY+lNLlNxz38yBBm/HLaUB1gTV6I0e+fahbF9pS6roIdzUytozWdnFV8ZnM6cSAG5EbmO0ag0a/fLZSG4Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <script>
+      var bird = undefined;
+      var score = 0;
+      var highscore = 0;
+      const canvas_width = 400;
+      const canvas_height = 400;
+
+      function Bird() {
+        this.bird_size = 40;
+        this.flappy_img = loadImage("./flappy.png");
+        this.flappy_pos = createVector(
+          50,
+          canvas_height / 2 - this.bird_size / 2
+        );
+        this.flappy_vel = createVector(0, 0);
+        this.flappy_acc = createVector(0, 0);
+        this.updateBird = function () {
+          this.flappy_pos.add(this.flappy_vel);
+        };
+        this.drawBird = function () {
+          image(
+            this.flappy_img,
+            this.flappy_pos["x"],
+            this.flappy_pos["y"],
+            this.bird_size,
+            this.bird_size
+          );
+        };
+        this.applyForce = function (force) {
+          this.flappy_acc.add(force);
+          this.flappy_vel.add(this.flappy_acc);
+          this.flappy_acc.mult(0);
+        };
+      }
+
+      function setup() {
+        createCanvas(canvas_width, canvas_height);
+        frameRate(60);
+        bird = new Bird();
+        //Load existing highscores
+        if (getItem("highscore") !== null) {
+          highscore = getItem("highscore");
+        }
+      }
+
+      function tick() {
+        //Update highscore if increased
+        if (score > highscore) {
+          highscore = score;
+          storeItem("highscore", highscore);
+        }
+
+        //Check for mouse input
+        if (mouseIsPressed === true) {
+        }
+      }
+
+      function draw() {
+        tick();
+        background(0, 255, 255);
+        bird.drawBird();
+      }
+    </script>
+  </body>
+</html>
