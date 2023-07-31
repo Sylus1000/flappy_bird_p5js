@@ -105,6 +105,7 @@
           this.y += this.velocity;
 
           if (this.y > height || this.y < 0) {
+            hitSound.play();
             resetGame();
           }
         }
